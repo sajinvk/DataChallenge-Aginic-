@@ -1,0 +1,65 @@
+1. Copy all files in the same directory . 
+2. Open env.set file and setup PYTHON PATH and SQL LITE PATH 
+3. Run ticket_setup.sh 
+n
+./ticket_setup.sh -h
+
+Usage: ./ticket_setup.sh [ -o ]  [ -f <filename> ]
+
+ -o                -- Number of activities in the jSON file
+ -f                -- Export JSON File name
+
+
+e.g ./ticket_setup.sh -o 7000 -f test_7000.json
+
+3. The bash script calls ticket_gen.py which creates JSON FILE . 
+You Can be run it as below : 
+
+ /root/anaconda3/bin/python3 ticket_gen.py -h
+usage: ticket_gen.py [-h] [-o ACTIVITY_N] [-f OUTPUT_FILE_NAME]
+
+Two arguments needs to be passed -o (number of activities ), -f (file name)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o ACTIVITY_N, --activity_n ACTIVITY_N
+                        Number of activities
+  -f OUTPUT_FILE_NAME, --output_file_name OUTPUT_FILE_NAME
+                        JSON file name store in the local directory
+
+e.g /root/anaconda3/bin/python3 ticket_gen.py -o 1200 -f test_1200.json
+
+4. The bash then calls the ticket_read.py for reading the JSON FILE and creates a file structured_data.csv in the same path 
+
+can be run independently using:
+/root/anaconda3/bin/python3 ticket_read.py -h
+usage: ticket_read.py [-h] [-f INPUT_FILE_NAME]
+
+One arguments needs to be passed -f (file name)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f INPUT_FILE_NAME, --input_file_name INPUT_FILE_NAME
+                        JSON file name store in the local directory
+
+
+e.g /root/anaconda3/bin/python3 ticket_read.py -f test_700.json
+
+5. The bash scirpt calls the sqlite for data load from CSV and select (Inside Bash script)
+6. Python Library used (!pip install Faker) 
+
+import json
+import argparse
+import logging
+import random
+from datetime import date , datetime , timedelta
+from faker import Faker
+import os 
+
+
+
+Flaws :
+
+
+Date time has been picked random so the data looks bit ugly e.g closed date might be earlier than the open date 
+
